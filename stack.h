@@ -18,6 +18,7 @@ typedef struct		Stack
   void *		(*pop)(struct Stack *th);
   void			(*clear)(struct Stack *th);
   unsigned int		(*size)(struct Stack *th);
+  char			(*isEmpty)(struct Stack *th);
   void			(*view)(struct Stack *, void(*display)(void *data));
 }			Stack;
 
