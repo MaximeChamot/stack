@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdlib.h>
 #include "stack.h"
 
@@ -7,7 +6,6 @@ static unsigned int	push(struct Stack *th, void *data);
 static void *		pop(struct Stack *th);
 static void		clear(struct Stack *th);
 static unsigned int	size(struct Stack *th);
-static char		isEmpty(struct Stack *th);
 static void		view(struct Stack *th, void (*display)(void *data));
 
 // Static functions declaration
@@ -31,7 +29,6 @@ static void		initMethodPtr(struct Stack *th)
   th->pop = &pop;
   th->clear = &clear;
   th->size = &size;
-  th->isEmpty = &isEmpty;
   th->view = &view;
 }
 
@@ -95,16 +92,6 @@ static unsigned int	size(struct Stack *th)
   if (th != NULL)
     return (th->len);
   return (0);
-}
-
-static char		isEmpty(struct Stack *th)
-{
-  char			val;
-
-  val = 1;
-  if (th != NULL && th->len > 0)
-    val = 0;
-  return (val);
 }
 
 static void		view(struct Stack *th, void (*display)(void *data))
