@@ -1,48 +1,40 @@
 #include <stdlib.h>
 #include "stack.h"
 
-// Member functions declaration
-static unsigned int	push(struct Stack *th, void *data);
-static void *		pop(struct Stack *th);
-static void		clear(struct Stack *th);
-static unsigned int	size(struct Stack *th);
-static void		view(struct Stack *th, void (*display)(void *data));
+// Methods declaration
+static unsigned int	push(struct stack *th, void *data);
+static void *		pop(struct stack *th);
+static void		clear(struct stack *th);
+static unsigned int	size(struct stack *th);
+static unsigned int	is_empty(struct stack *th);
+static void		view(struct stack *th, void (*display)(void *data));
 
-// Static functions declaration
-static void		initMethodPtr(struct Stack *th);
-static void *		deleteNode(struct Stack *th);
+// Private functions declaration
+static void		init_method_ptr(struct stack *th);
+static void *		delete_node(struct stack *th);
 
 // Constructor
-void			StackInit(struct Stack *th)
+struct stack *		new_stack(void)
+{
+  struct stack		*stack = NULL;
+
+  if ((stack = (struct stack *)malloc(sizeof(struct stack))) != NULL)
+    stack_init(stack);
+  return (stack);
+}
+
+void			stack_init(struct stack *th)
 {
   if (th != NULL)
     {
       th->len = 0;
       th->head = NULL;
-      initMethodPtr(th);
+      init_method_ptr(th);
     }
 }
 
-static void		initMethodPtr(struct Stack *th)
-{
-  th->push = &push;
-  th->pop = &pop;
-  th->clear = &clear;
-  th->size = &size;
-  th->view = &view;
-}
-
-struct Stack *		NewStack(void)
-{
-  struct Stack		*newStack;
-
-  if ((newStack = (struct Stack *)malloc(sizeof(struct Stack))) != NULL)
-    StackInit(newStack);
-  return (newStack);
-}
-
 // Destructor
-void			StackDestroy(struct Stack *th)
+void			stack_destroy(struct stack *th)
 {
   if (th != NULL)
     {
@@ -53,17 +45,17 @@ void			StackDestroy(struct Stack *th)
 }
 
 // Member functions
-static unsigned int	push(struct Stack *th, void *data)
+static unsigned int	push(struct stack *th, void *data)
 {
-  struct Node		*newNode;
+  struct node		*new_node;
 
   if (th != NULL)
     {
-      if ((newNode = (struct Node *)malloc(sizeof(struct Node))) != NULL)
+      if ((new_node = (struct node *)malloc(sizeof(struct node))) != NULL)
 	{
-	  newNode->data = data;
-	  newNode->prev = th->head;
-	  th->head = newNode;
+	  new_node->data = data;
+	  new_node->prev = th->head;
+	  th->head = new_node;
 	  th->len++;
 	}
       return (th->len);
@@ -71,50 +63,70 @@ static unsigned int	push(struct Stack *th, void *data)
   return (0);
 }
 
-static void *		pop(struct Stack *th)
+static void *		pop(struct stack *th)
 {
   if (th != NULL)
-    return (deleteNode(th));
+    return (delete_node(th));
   return (NULL);
 }
 
-static void		clear(struct Stack *th)
+static void		clear(struct stack *th)
 {
   if (th != NULL)
     {
       while (th->head != NULL)
-	deleteNode(th);
+	delete_node(th);
     }
 }
 
-static unsigned int	size(struct Stack *th)
+static unsigned int	size(struct stack *th)
 {
   if (th != NULL)
     return (th->len);
   return (0);
 }
 
-static void		view(struct Stack *th, void (*display)(void *data))
+static unsigned int	is_empty(struct stack *th)
 {
-  struct Node		*it;
+  if (th != NULL && th->head != NULL && th->len > 0)
+    return (0);
+  return (1);
+}
+
+static void		view(struct stack *th, void (*display)(void *data))
+{
+  struct node		*node;
 
   if (th != NULL && display != NULL)
     {
-      it = th->head;
-      while (it != NULL)
+      node = th->head;
+      while (node != NULL)
 	{
-	  display(it->data);
-	  it = it->prev;
+	  display(node->data);
+	  node = node->prev;
 	}
     }
 }
 
-static void *		deleteNode(struct Stack *th)
+// Private functions
+static void		init_method_ptr(struct stack *th)
 {
-  struct Node		*tmp;
-  void			*data;
+  if (th != NULL)
+    {
+      th->push = &push;
+      th->pop = &pop;
+      th->clear = &clear;
+      th->size = &size;
+      th->is_empty;
+      th->view = &view;
+    }
+}
 
-  data = NULL;
+static void *		delete_node(struct stack *th)
+{
+  struct node		*tmp = NULL;
+  void			*data = NULL;
+
   if (th != NULL && th->head != NULL)
     {
       tmp = th->head;

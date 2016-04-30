@@ -1,29 +1,29 @@
 #ifndef _STACK_H_
 # define _STACK_H_
 
-typedef struct		Node
+typedef struct		node
 {
   void			*data;
-  struct Node		*prev;
-}			Node;
+  struct node		*prev;
+}			node;
 
-typedef struct		Stack
+typedef struct		stack
 {
   // Properties
   unsigned int		len;
-  struct Node		*head;
+  struct node		*head;
 
-  // Member functions
-  unsigned int		(*push)(struct Stack *th, void *data);
-  void *		(*pop)(struct Stack *th);
-  void			(*clear)(struct Stack *th);
-  unsigned int		(*size)(struct Stack *th);
-  char			(*isEmpty)(struct Stack *th);
-  void			(*view)(struct Stack *, void(*display)(void *data));
-}			Stack;
+  // Methods
+  unsigned int		(*push)(struct stack *th, void *data);
+  void *		(*pop)(struct stack *th);
+  void			(*clear)(struct stack *th);
+  unsigned int		(*size)(struct stack *th);
+  unsigned int		(*is_empty)(struct stack *th);
+  void			(*view)(struct stack *, void(*display)(void *data));
+}			stack;
 
-void			StackInit(struct Stack *th);
-struct Stack *		NewStack(void);
-void			StackDestroy(struct Stack *th);
+void			stack_init(struct stack *th);
+struct stack *		new_stack(void);
+void			stack_destroy(struct stack *th);
 
 #endif // _STACK_H_
