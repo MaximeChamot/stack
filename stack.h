@@ -19,6 +19,7 @@ typedef struct		stack
   void			(*clear)(struct stack *th);
   unsigned int		(*size)(struct stack *th);
   unsigned int		(*is_empty)(struct stack *th);
+  void *		(*peek)(struct stack *th);
   void			(*view)(struct stack *, void(*display)(void *data));
 }			stack;
 

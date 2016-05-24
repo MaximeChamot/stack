@@ -6,12 +6,13 @@ static unsigned int	push(struct stack *th, void *data);
 static void *		pop(struct stack *th);
 static void		clear(struct stack *th);
 static unsigned int	size(struct stack *th);
+static void *		peek(struct stack *th);
 static unsigned int	is_empty(struct stack *th);
 static void		view(struct stack *th, void (*display)(void *data));
 
 // Private functions declaration
 static void		init_method_ptr(struct stack *th);
-static void *		delete_node(struct stack *th);
+static int		delete_node(struct stack *th);
 
 // Constructor
 struct stack *		new_stack(void)
@@ -65,9 +66,14 @@ static unsigned int	push(struct stack *th, void *data)
 
 static void *		pop(struct stack *th)
 {
-  if (th != NULL)
-    return (delete_node(th));
-  return (NULL);
+  void			*data = NULL;
+
+  if (th != NULL && th->head != NULL)
+    {
+      data = th->head->data;
+      delete_node(th);
+    }
+  return (data);
 }
 
 static void		clear(struct stack *th)
@@ -122,18 +128,18 @@ static void		init_method_ptr(struct stack *th)
     }
 }
 
-static void *		delete_node(struct stack *th)
+int			delete_node(struct stack *th)
 {
   struct node		*tmp = NULL;
-  void			*data = NULL;
+  int			n = 0;
 
   if (th != NULL && th->head != NULL)
     {
       tmp = th->head;
-      data = th->head->data;
       th->head = th->head->prev;
       free(tmp);
       th->len--;
+      n = 1;
     }
-  return (data);
+  return (n);
 }
