@@ -30,7 +30,8 @@ int		main()
   // test 2
   printf("test 2: pop 1 element and print the value\n");
 
-  unsigned int *data = stack->pop(stack);
+  unsigned int *data = stack->top(stack);
+  stack->pop(stack);
 
   printf("value [30]:[%d]\n", *data);
   printf("Size:  [6]:[%d]\n", stack->size(stack));

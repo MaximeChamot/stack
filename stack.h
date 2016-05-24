@@ -15,7 +15,7 @@ typedef struct		stack
 
   // Methods
   void			(*push)(struct stack *th, void *data);
-  void *		(*pop)(struct stack *th);
+  void			(*pop)(struct stack *th);
   void			(*clear)(struct stack *th);
   unsigned int		(*size)(struct stack *th);
   unsigned int		(*empty)(struct stack *th);

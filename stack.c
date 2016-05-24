@@ -4,7 +4,7 @@
 
 // Methods declaration
 static void		push(struct stack *th, void *data);
-static void *		pop(struct stack *th);
+static void		pop(struct stack *th);
 static void		clear(struct stack *th);
 static unsigned int	size(struct stack *th);
 static void *		top(struct stack *th);
@@ -60,16 +60,10 @@ static void		push(struct stack *th, void *data)
     }
 }
 
-static void *		pop(struct stack *th)
+static void		pop(struct stack *th)
 {
-  void			*data = NULL;
-
   if (th != NULL && th->head != NULL)
-    {
-      data = th->head->data;
-      delete_node(th);
-    }
-  return (data);
+    delete_node(th);
 }
 
 static void		clear(struct stack *th)
