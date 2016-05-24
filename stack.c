@@ -1,18 +1,19 @@
 #include <stdlib.h>
+#include <stdio.h>
 #include "stack.h"
 
 // Methods declaration
-static unsigned int	push(struct stack *th, void *data);
+static void		push(struct stack *th, void *data);
 static void *		pop(struct stack *th);
 static void		clear(struct stack *th);
 static unsigned int	size(struct stack *th);
-static void *		peek(struct stack *th);
-static unsigned int	is_empty(struct stack *th);
+static void *		top(struct stack *th);
+static unsigned int	empty(struct stack *th);
 static void		view(struct stack *th, void (*display)(void *data));
 
 // Private functions declaration
 static void		init_method_ptr(struct stack *th);
-static int		delete_node(struct stack *th);
+static void		delete_node(struct stack *th);
 
 // Constructor
 struct stack *		new_stack(void)
@@ -46,22 +47,17 @@ void			stack_destroy(struct stack *th)
 }
 
 // Member functions
-static unsigned int	push(struct stack *th, void *data)
+static void		push(struct stack *th, void *data)
 {
   struct node		*new_node;
 
-  if (th != NULL)
+  if (th != NULL && (new_node = (struct node *)malloc(sizeof(struct node))) != NULL)
     {
-      if ((new_node = (struct node *)malloc(sizeof(struct node))) != NULL)
-	{
-	  new_node->data = data;
-	  new_node->prev = th->head;
-	  th->head = new_node;
-	  th->len++;
-	}
-      return (th->len);
+      new_node->data = data;
+      new_node->prev = th->head;
+      th->head = new_node;
+      th->len++;
     }
-  return (0);
 }
 
 static void *		pop(struct stack *th)
@@ -92,11 +88,20 @@ static unsigned int	size(struct stack *th)
   return (0);
 }
 
-static unsigned int	is_empty(struct stack *th)
+static unsigned int	empty(struct stack *th)
 {
   if (th != NULL && th->head != NULL && th->len > 0)
     return (0);
   return (1);
+}
+
+static void *		top(struct stack *th)
+{
+  void			*data = NULL;
+
+  if (th != NULL && th->head != NULL)
+    data = th->head->data;
+  return (data);
 }
 
 static void		view(struct stack *th, void (*display)(void *data))
@@ -123,15 +128,15 @@ static void		init_method_ptr(struct stack *th)
       th->pop = &pop;
       th->clear = &clear;
       th->size = &size;
-      th->is_empty;
+      th->empty = &empty;
+      th->top = &top;
       th->view = &view;
     }
 }
 
-int			delete_node(struct stack *th)
+void			delete_node(struct stack *th)
 {
   struct node		*tmp = NULL;
-  int			n = 0;
 
   if (th != NULL && th->head != NULL)
     {
@@ -139,7 +144,5 @@ int			delete_node(struct stack *th)
       th->head = th->head->prev;
       free(tmp);
       th->len--;
-      n = 1;
     }
-  return (n);
 }

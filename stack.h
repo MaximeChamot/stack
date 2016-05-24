@@ -14,12 +14,12 @@ typedef struct		stack
   struct node		*head;
 
   // Methods
-  unsigned int		(*push)(struct stack *th, void *data);
+  void			(*push)(struct stack *th, void *data);
   void *		(*pop)(struct stack *th);
   void			(*clear)(struct stack *th);
   unsigned int		(*size)(struct stack *th);
-  unsigned int		(*is_empty)(struct stack *th);
-  void *		(*peek)(struct stack *th);
+  unsigned int		(*empty)(struct stack *th);
+  void *		(*top)(struct stack *th);
   void			(*view)(struct stack *, void(*display)(void *data));
 }			stack;
 
